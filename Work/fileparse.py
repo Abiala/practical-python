@@ -4,24 +4,22 @@
 
 import csv 
 
-def parse_csv(filename, types = [str, int, float]):
+def parse_csv(filename, types = [str, float]):
     '''
     Parse a CSV file into a list of records
     '''
     with open(filename) as f:
         rows = csv.reader(f)
 
-        #Read the file headers
-        headers = next(rows)
-        records = []
+        prices = []
         for row in rows:
             if not row:     # Skip rows with no data
                 continue
-            row = [func(val) for func, val in zip(types, row)]
-            record = dict(zip(headers, row))
-            records.append(record)
+            record = [ func(val) for func, val in zip(types, row) ]
+            record = tuple(record)
+            prices.append(record)
 
-    return records
+    return prices
 
-portfolio = parse_csv('Data/portfolio.csv')
+prices = parse_csv('Data/prices.csv')
     
